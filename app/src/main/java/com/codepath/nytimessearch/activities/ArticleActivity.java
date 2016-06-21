@@ -1,10 +1,13 @@
-package com.codepath.nytimessearch;
+package com.codepath.nytimessearch.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import com.codepath.nytimessearch.Article;
+import com.codepath.nytimessearch.R;
 
 public class ArticleActivity extends AppCompatActivity {
 
