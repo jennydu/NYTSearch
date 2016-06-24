@@ -1,5 +1,7 @@
 package com.codepath.nytimessearch;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,8 +18,6 @@ public class Article implements Serializable{
     String headline;
     String thumbnail;
 
-
-
     public String getWebUrl() {
         return webUrl;
     }
@@ -31,22 +31,45 @@ public class Article implements Serializable{
     }
 
 
-
     public Article(JSONObject jsonObject){
-        try{
-            this.webUrl = jsonObject.getString("web_url");
-            this.headline = jsonObject.getJSONObject("headline").getString("main");
+        try {
 
-            JSONArray multimedia = jsonObject.getJSONArray("multimedia");
-            if (multimedia.length() > 0){
-                JSONObject multimediaJson = multimedia.getJSONObject(0);
-                this.thumbnail = "http://nytimes.com/" + multimediaJson.getString("url");
-            }else {
+            this.webUrl = jsonObject.optString("web_url");
+            if (webUrl == null || webUrl.length() < 1) {
+                this.webUrl = jsonObject.optString("url");
+            }
+
+            JSONObject headlineObj = jsonObject.optJSONObject("headline");
+            if (headlineObj == null) {
+                this.headline = jsonObject.optString("title");
+            } else {
+                this.headline = headlineObj.getString("main");
+            }
+
+
+            if (jsonObject.optString("multimedia").equals("")) {
                 this.thumbnail = "";
             }
-        } catch(JSONException e){
+            else{
+                JSONArray multimedia = jsonObject.optJSONArray("multimedia");
+                if (multimedia != null && multimedia.length() > 0 ) {
+                    JSONObject multimediaJson = multimedia.optJSONObject(0);
+                    if (multimediaJson.getString("url").startsWith("http")) {
+                        this.thumbnail = multimediaJson.getString("url");
+                    } else {
+                        this.thumbnail = "http://nytimes.com/" + multimediaJson.getString("url");
 
-        }
+                    }
+                }
+                else { // if multimedia is null or empty
+                    this.thumbnail = "";
+
+                }
+            }
+            } catch(JSONException e){
+                Log.d("error", e.toString());
+            }
+
 
     }
 

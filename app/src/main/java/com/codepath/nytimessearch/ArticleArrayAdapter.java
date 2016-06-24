@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -20,6 +20,7 @@ public class ArticleArrayAdapter extends ArrayAdapter<Article> {
 
     public ArticleArrayAdapter(Context context, List<Article> articles){
         super(context,android.R.layout.simple_list_item_1, articles);
+
     }
 
     @Override
@@ -47,7 +48,7 @@ public class ArticleArrayAdapter extends ArrayAdapter<Article> {
         // populate thumbnail image
         String thumbnail = article.getThumbnail();
         if (!TextUtils.isEmpty(thumbnail)){
-            Picasso.with(getContext()).load(thumbnail).into(imageView);
+            Glide.with(getContext()).load(thumbnail).into(imageView);
         }
         return convertView;
 

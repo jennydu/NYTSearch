@@ -16,6 +16,7 @@ import android.widget.GridView;
 import com.codepath.nytimessearch.Article;
 import com.codepath.nytimessearch.ArticleArrayAdapter;
 import com.codepath.nytimessearch.EndlessScrollListener;
+import com.codepath.nytimessearch.Filters;
 import com.codepath.nytimessearch.R;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -34,10 +35,14 @@ public class SearchActivity extends AppCompatActivity {
     EditText etQuery;
     GridView gvResults;
     Button btnSearch;
+    Button btnFilter;
 
+    String query;
     ArrayList<Article> articles;
+    Filters myFilter;
 
     ArticleArrayAdapter adapter;
+
 
 
     @Override
@@ -56,18 +61,113 @@ public class SearchActivity extends AppCompatActivity {
             public boolean onLoadMore(int page, int totalItemsCount) {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to your AdapterView
+
+
+
                 customLoadMoreDataFromApi(page);
                 // or customLoadMoreDataFromApi(totalItemsCount);
                 return true; // ONLY if more data is actually being loaded; false otherwise.
             }
         });
 
+        loadHomeArticles();
+
+    }
+
+    public void loadHomeArticles(){
+        AsyncHttpClient client = new AsyncHttpClient();
+        String url = "http://api.nytimes.com/svc/topstories/v1/home.json?";
+
+        RequestParams params = new RequestParams();
+        params.put("api-key",
+                "0be89842a4dc4f99ba0d5aa314659d4d");
+
+
+        client.get(url, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Log.d("DEBUG", response.toString());
+                JSONArray articleJsonResults = null;
+                try{
+                    articleJsonResults = response.getJSONArray("results");
+
+                    //articleJsonResults = response.getJSONObject("response").getJSONArray("docs");
+                    adapter.addAll(Article.fromJsonArray(articleJsonResults));
+
+                    Log.d("DEBUG", articles.toString());
+                } catch(JSONException e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+        });
     }
 
     public void customLoadMoreDataFromApi(int offset) {
         // This method probably sends out a network request and appends new data items to your adapter.
         // Use the offset value and add it as a parameter to your API request to retrieve paginated data.
         // Deserialize API response and then construct new objects to append to the adapter
+
+        query = etQuery.getText().toString();
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        String url = "http://api.nytimes.com/svc/search/v2/articlesearch.json";
+
+        RequestParams params = new RequestParams();
+        params.put("api-key",
+                "0be89842a4dc4f99ba0d5aa314659d4d");
+
+        params.put("q", query);
+
+        params.put("page", offset);
+
+        if (myFilter!=null){
+            String news_desk = myFilter.getNews_desk();
+            String sort = myFilter.getSort();
+            String begin_date = myFilter.getBegin_date();
+
+            if (news_desk != null && news_desk.length() > 0){
+                params.put("fq", ("news_desk:\"" + news_desk + "\""));
+            }
+            if (sort != null && sort.length() > 0){
+                params.put("sort", sort);
+            }
+            if (begin_date != null && begin_date.length() > 0){
+                params.put("begin_date", begin_date);
+            }
+        }
+
+
+        Log.d("search activity", url+"?"+params);
+
+        client.get(url, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Log.d("DEBUG", response.toString());
+                JSONArray articleJsonResults = null;
+                try{
+                    articleJsonResults = response.getJSONObject("response").getJSONArray("docs");
+                    adapter.addAll(Article.fromJsonArray(articleJsonResults));
+
+                    Log.d("DEBUG", articles.toString());
+                } catch(JSONException e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+        });
+
+
+
+
     }
 
     public void setUpViews(){
@@ -77,6 +177,9 @@ public class SearchActivity extends AppCompatActivity {
         articles = new ArrayList<>();
         adapter = new ArticleArrayAdapter(this, articles);
         gvResults.setAdapter(adapter);
+        btnFilter = (Button) findViewById(R.id.btnFilter);
+
+
 
         // hook up listener for grid clicks
         gvResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -116,6 +219,81 @@ public class SearchActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private final int FILTER_REQUEST_CODE = 55;
+
+    public void onFilter(View v){
+        Intent i = new Intent(getApplicationContext(), FilterActivity.class);
+
+        startActivityForResult(i, FILTER_REQUEST_CODE);
+
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+
+
+        if (requestCode == FILTER_REQUEST_CODE){
+            if (resultCode == RESULT_OK){
+
+                myFilter = (Filters) data.getSerializableExtra("filters");
+
+
+                onFilteredSearch();
+
+            }
+        }
+    }
+
+    public void onFilteredSearch(){ //  take stuff out of myFilter here
+        articles.clear();
+        query = etQuery.getText().toString();
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        String url = "http://api.nytimes.com/svc/search/v2/articlesearch.json";
+
+        RequestParams params = new RequestParams();
+        params.put("api-key",
+                "0be89842a4dc4f99ba0d5aa314659d4d");
+        params.put("page", 0);
+        params.put("q", query);
+
+        if (myFilter != null) {
+            String news_desk = myFilter.getNews_desk();
+            String sort = myFilter.getSort();
+            String begin_date = myFilter.getBegin_date();
+
+            if (news_desk != null && news_desk.length() > 0) {
+                params.put("fq", ("news_desk:\"" + news_desk + "\""));
+            }
+            if (sort != null && sort.length() > 0) {
+                params.put("sort", sort);
+            }
+            if (begin_date != null && begin_date.length() > 0) {
+                params.put("begin_date", begin_date);
+            }
+        }
+
+        client.get(url, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Log.d("DEBUG", response.toString());
+                JSONArray articleJsonResults = null;
+                try{
+                    articleJsonResults = response.getJSONObject("response").getJSONArray("docs");
+                    adapter.addAll(Article.fromJsonArray(articleJsonResults));
+
+                    Log.d("DEBUG", articles.toString());
+                } catch(JSONException e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+        });
+    }
+
     public void onArticleSearch(View view) {
         articles.clear();
         String query = etQuery.getText().toString();  // getting input from the plaintext box and converting to string
@@ -144,6 +322,11 @@ public class SearchActivity extends AppCompatActivity {
                 } catch(JSONException e){
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
             }
         });
 

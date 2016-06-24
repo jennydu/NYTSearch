@@ -32,6 +32,10 @@ public class ArticleActivity extends AppCompatActivity {
 
         webview.loadUrl(article.getWebUrl());
 
+
+
     }
+
+
 
 }

@@ -4,4 +4,11 @@
     <string name="hint">Enter search query</string>
     <string name="search">Search</string>
     <string name="title_activity_article">ArticleActivity</string>
+    <string name="title_activity_filter">FilterActivity</string>
+    <string name="Arts">Arts</string>
+    <string name="Fashion">Fashion and Style</string>
+    <string name="Sports">Sports</string>
+    <string name="sort_order">Sort order:</string>
+    <string name="choose_topics">Choose a topic to search within:</string>
+    <string name="pick_date">Pick a begin date to search by:</string>
 </resources>

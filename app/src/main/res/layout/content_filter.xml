@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.codepath.nytimessearch.activities.FilterActivity"
+    tools:showIn="@layout/activity_filter">
+
+    <Spinner
+        android:id="@+id/spOrder"
+        android:layout_width="wrap_content"
+        android:entries="@array/order_array"
+        android:prompt="@string/sort_order"
+        android:layout_height="wrap_content" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:entries="@array/topics_array"
+        android:prompt="@string/choose_topics"
+        android:id="@+id/spTopics"
+        android:layout_below="@id/spOrder"/>
+
+    <Button
+        android:id="@+id/btnDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pick_date"
+        android:onClick="showDatePickerDialog"
+        android:layout_below="@id/spTopics"/>
+    <TextView
+        android:layout_below="@id/btnDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/date_chosen" />
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Filter results"
+        android:id="@+id/submitFilter"
+        android:layout_below="@id/date_chosen"
+        android:onClick="onSubmit" />
+
+
+
+
+</RelativeLayout>
