@@ -1,8 +1,8 @@
-# Project 2 - *Name of App Here*
+# Project 2 - *New York Times Article Search*
 
-**Name of your app** is an android app that allows a user to search for articles on web using simple filters. The app utilizes [New York Times Search API](http://developer.nytimes.com/docs/read/article_search_api_v2).
+**New York Times Article Search** is an android app that allows a user to search for articles on web using simple filters. The app utilizes [New York Times Search API](http://developer.nytimes.com/docs/read/article_search_api_v2).
 
-Time spent: **X** hours spent in total
+Time spent: **30** hours spent in total
 
 ## User Stories
 
@@ -15,21 +15,21 @@ The following **required** functionality is completed:
 The following **optional** features are implemented:
 
 * [ ] Used the **ActionBar SearchView** or custom layout as the query box
-* [ ] User can **share an article link** to their friends or email it to themselves
-* [ ] Improved the user interface and experiment with image assets and/or styling and coloring
-* [ ] User can click on "settings" which allows selection of **advanced search options** to filter results
-  * [ ] User can configure advanced search filters such as:
-    * [ ] Begin Date (using a date picker)
-    * [ ] News desk values (Arts, Fashion & Style, Sports)
-    * [ ] Sort order (oldest or newest)
-  * [ ] Subsequent searches have any selected filters applied to the results
+* [x] User can **share an article link** to their friends or email it to themselves
+* [x] Improved the user interface and experiment with image assets and/or styling and coloring
+* [x] User can click on "settings" which allows selection of **advanced search options** to filter results
+  * [x] User can configure advanced search filters such as:
+    * [x] Begin Date (using a date picker)
+    * [x] News desk values (Arts, Fashion & Style, Sports)
+    * [x] Sort order (oldest or newest)
+  * [x] Subsequent searches have any selected filters applied to the results
   * [ ] Uses a lightweight modal dialog for filters rather than an activity
 * [ ] Replaces the default ActionBar with a [Toolbar](http://guides.codepath.com/android/Using-the-App-ToolBar).
 * [ ] Apply the popular [Butterknife annotation library](http://guides.codepath.com/android/Reducing-View-Boilerplate-with-Butterknife) to reduce view boilerplate.
 * [ ] Replace `GridView` with the [RecyclerView](http://guides.codepath.com/android/Using-the-RecyclerView) and the `StaggeredGridLayoutManager` to improve the grid of image results displayed.
 * [ ] Use Parcelable instead of Serializable leveraging the popular [Parceler library](http://guides.codepath.com/android/Using-Parceler).
-* [ ] Replace Picasso with [Glide](http://inthecheesefactory.com/blog/get-to-know-glide-recommended-by-google/en) for more efficient image rendering.
-* [ ] Before an article search is triggered by the user, displays the current top stories of the day by default.
+* [x] Replace Picasso with [Glide](http://inthecheesefactory.com/blog/get-to-know-glide-recommended-by-google/en) for more efficient image rendering.
+* [x] Before an article search is triggered by the user, displays the current top stories of the day by default.
 * [ ] Hides the `Toolbar` at the top as the user scrolls down through the results using the [CoordinatorLayout and AppBarLayout](http://guides.codepath.com/android/Using-the-App-ToolBar#reacting-to-scroll).
 * [ ] Leverage the popular [GSON library](http://guides.codepath.com/android/Using-Android-Async-Http-Client#decoding-with-gson-library) to streamline the parsing of JSON data and avoid manual parsing.
 
