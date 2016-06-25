@@ -2,7 +2,7 @@
 
 **New York Times Article Search** is an android app that allows a user to search for articles on web using simple filters. The app utilizes [New York Times Search API](http://developer.nytimes.com/docs/read/article_search_api_v2).
 
-Time spent: **30** hours spent in total
+Time spent: **25** hours spent in total
 
 ## User Stories
 
@@ -35,13 +35,14 @@ The following **optional** features are implemented:
 
 The following **additional** features are implemented:
 
-* [ ] List anything else that you can get done to improve the app functionality!
+* [x] List anything else that you can get done to improve the app functionality!
+  * Added a placeholder image to display if a given article displayed no images
 
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='http://imgur.com/8qOWJco.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
@@ -49,14 +50,19 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 Describe any challenges encountered while building the app.
 
+Emulator API incompatibilities, computer slowness, and random bugs in the emulator-Android Studio connection were the main difficulties I encountered this week. At one point I spent several hours debugging one line of code, and at some random point after lots of stepping through breakpoints, the program just started working (no changes to the code). 
+
+The biggest issue I saw during development, for me and also most of the other students, was the API request limit. When we requested API keys, a lot of students didn't receive one. We mostly used the ones that were listed on the assignment page, which led to buggy loading and exceeding the number of requests. It was hard to test our apps when the articles weren't loading at all.
+
 ## Open-source libraries used
 
 - [Android Async HTTP](https://github.com/loopj/android-async-http) - Simple asynchronous HTTP requests with JSON parsing
-- [Picasso](http://square.github.io/picasso/) - Image loading and caching library for Android
+- [Glide](https://github.com/bumptech/glide) - Image loading and caching library for Android
+
 
 ## License
 
-    Copyright [yyyy] [name of copyright owner]
+    Copyright [2016] [copywrite owner]
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
